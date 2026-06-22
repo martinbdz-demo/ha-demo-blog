@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard – My Blog</title>
+    <style>
+        body { font-family: sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem 1rem; color: #222; }
+        header { border-bottom: 2px solid #222; margin-bottom: 2rem; padding-bottom: 1rem; display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; }
+        h1 { margin: 0; font-size: 1.5rem; }
+        .header-actions { display: flex; gap: 1rem; align-items: center; }
+        .header-actions span { font-size: 0.85rem; color: #777; }
+        a.btn, button.btn { padding: 0.4rem 0.9rem; font-size: 0.9rem; border-radius: 4px; text-decoration: none; cursor: pointer; border: 1px solid #222; background: #fff; color: #222; }
+        a.btn-primary, button.btn-primary { background: #222; color: #fff; }
+        a.btn:hover, button.btn:hover { opacity: 0.75; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid #eee; }
+        th { font-size: 0.85rem; color: #777; text-transform: uppercase; letter-spacing: 0.05em; }
+        td.actions { white-space: nowrap; }
+        .flash-success { background: #dfd; border: 1px solid #080; padding: 0.6rem 1rem; margin-bottom: 1.5rem; border-radius: 4px; font-size: 0.9rem; }
+        .empty { color: #777; font-style: italic; padding: 1rem 0; }
+        form.inline { display: inline; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Admin Dashboard</h1>
+    <div class="header-actions">
+        <span sec:authentication="name">admin</span>
+        <a class="btn btn-primary" th:href="@{/admin/posts/new}">+ New Post</a>
+        <form th:action="@{/admin/logout}" method="post">
+            <button type="submit" class="btn">Log out</button>
+        </form>
+        <a class="btn" th:href="@{/}">View Blog</a>
+    </div>
+</header>
+
+<div th:if="${success}" class="flash-success" th:text="${success}"></div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${#lists.isEmpty(posts)}">
+        <td colspan="3" class="empty">No posts yet. <a th:href="@{/admin/posts/new}">Create one.</a></td>
+    </tr>
+    <tr th:each="post : ${posts}">
+        <td>
+            <a th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}" target="_blank">Title</a>
+        </td>
+        <td th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy')}">Date</td>
+        <td class="actions">
+            <form class="inline" th:action="@{/admin/posts/{id}/delete(id=${post.id})}" method="post"
+                  onsubmit="return confirm('Delete this post?')">
+                <button type="submit" class="btn">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

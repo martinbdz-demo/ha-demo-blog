@@ -1,0 +1,44 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Spring Boot
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+logs/
+
+# IDE — IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# IDE — Eclipse / STS
+.classpath
+.project
+.settings/
+.sts4-cache/
+
+# IDE — VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# H2 file-based database (if switched from in-memory)
+data/
+*.db
+*.mv.db
+*.trace.db
+
+# Environment / secrets
+.env
+*.env.local
