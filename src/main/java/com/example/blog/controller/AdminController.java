@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -24,18 +25,21 @@ public class AdminController {
         return "admin/login";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public String dashboard(Model model) {
         model.addAttribute("posts", service.findAll());
         return "admin/dashboard";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/posts/new")
     public String newPostForm(Model model) {
         model.addAttribute("post", new BlogPost());
         return "admin/new-post";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/posts")
     public String createPost(@Valid @ModelAttribute("post") BlogPost post,
                              BindingResult result,
@@ -48,6 +52,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/posts/{id}/delete")
     public String deletePost(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         service.deleteById(id);
