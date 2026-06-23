@@ -44,7 +44,7 @@ App available at `http://localhost:5173`.
 
 ```bash
 # Build the image (Maven and npm both run inside the container)
-DOCKER_BUILDKIT=0 docker build -t blog-app .
+DOCKER_BUILDKIT=1 docker build -t blog-app .
 
 # Start
 docker run -p 8080:8080 blog-app

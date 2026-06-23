@@ -58,13 +58,11 @@ mvn spring-boot:run
 cd frontend && npm run dev
 ```
 
-Maven is not on PATH. Use the full path: `/opt/homebrew/opt/maven/bin/mvn`
-
 ## Building
 
 ```bash
 # Backend fat jar
-/opt/homebrew/opt/maven/bin/mvn clean package -DskipTests
+mvn clean package -DskipTests
 
 # Frontend production build
 cd frontend && npm run build
@@ -74,7 +72,7 @@ cd frontend && npm run build
 ## Tests
 
 ```bash
-/opt/homebrew/opt/maven/bin/mvn test
+mvn test
 ```
 
 18 tests across 5 classes. All `@WebMvcTest` classes must `@Import(SecurityConfig.class)` — Spring Boot's web slice does not auto-discover it. Surefire needs `-Dnet.bytebuddy.experimental=true` (already in pom.xml) because the machine runs Java 26, which Byte Buddy doesn't officially support yet.
@@ -115,13 +113,8 @@ Hardcoded in `SecurityConfig.java` (`InMemoryUserDetailsManager`):
 
 ## Docker
 
-Docker Desktop is not installed. Use Colima as the Docker daemon:
-
-```bash
-colima start
-DOCKER_BUILDKIT=0 docker build -t blog-app .
-docker run -p 8080:8080 blog-app
-colima stop
-```
-
 The Dockerfile currently only builds the Spring Boot backend. Build the React frontend first and copy `frontend/dist/` to `src/main/resources/static/` to serve both from one container.
+
+## Update CLAUDE.md
+
+After every change make sure to update this instruction set anything interesting. 
