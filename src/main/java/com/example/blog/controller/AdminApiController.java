@@ -24,7 +24,6 @@ public class AdminApiController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(post));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/posts/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         service.deleteById(id);
