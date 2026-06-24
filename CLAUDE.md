@@ -31,7 +31,8 @@ ha-demo-app/
 │   │       ├── PostApiController.java   # GET /api/posts, GET /api/posts/{id}
 │   │       ├── AdminApiController.java  # POST/DELETE /api/admin/posts (ADMIN only)
 │   │       ├── AuthController.java      # POST /api/auth/login|logout, GET /api/auth/me
-│   │       └── LoginRequest.java        # record {username, password}
+│   │       ├── LoginRequest.java        # record {username, password}
+│   │       └── SpaController.java       # Forwards non-asset paths to index.html for React Router
 │   └── main/resources/application.properties
 ├── src/test/java/com/example/blog/     # JUnit 5 + MockMvc tests
 └── frontend/                           # Vite + React SPA
@@ -113,7 +114,15 @@ Hardcoded in `SecurityConfig.java` (`InMemoryUserDetailsManager`):
 
 ## Docker
 
-The Dockerfile currently only builds the Spring Boot backend. Build the React frontend first and copy `frontend/dist/` to `src/main/resources/static/` to serve both from one container.
+Multi-stage build: Node builds the React SPA, Maven packages Spring Boot with the frontend baked into `src/main/resources/static/`, JRE runs the final JAR.
+
+```bash
+docker build -t blog-app .
+docker run -p 8080:8080 blog-app
+# App available at http://localhost:8080
+```
+
+`SpaController.java` forwards all non-asset, non-API paths to `index.html` so React Router handles client-side navigation correctly (e.g. refreshing `/posts/1` doesn't 404).
 
 ## Update CLAUDE.md
 
