@@ -49,14 +49,14 @@ class AdminApiControllerTest {
 
     @Test
     void deletePost_returns401_whenNotAuthenticated() throws Exception {
-        mvc.perform(delete("/api/admin/posts/1"))
+        mvc.perform(delete("/api/admin/delete-posts/1"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockUser(roles = "USER")
     void deletePost_returns403_withoutAdminRole() throws Exception {
-        mvc.perform(delete("/api/admin/posts/1"))
+        mvc.perform(delete("/api/admin/delete-posts/1"))
                 .andExpect(status().isForbidden());
     }
 
@@ -93,7 +93,7 @@ class AdminApiControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void deletePost_returns204() throws Exception {
-        mvc.perform(delete("/api/admin/posts/1"))
+        mvc.perform(delete("/api/admin/delete-posts/1"))
                 .andExpect(status().isNoContent());
 
         verify(service).deleteById(1L);
