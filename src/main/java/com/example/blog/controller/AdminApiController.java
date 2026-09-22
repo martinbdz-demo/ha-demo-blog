@@ -24,7 +24,7 @@ public class AdminApiController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(post));
     }
 
-    @DeleteMapping("/posts/{id}")
+    @DeleteMapping("/delete-posts/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
