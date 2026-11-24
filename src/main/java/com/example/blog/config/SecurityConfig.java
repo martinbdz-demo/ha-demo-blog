@@ -55,6 +55,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
             )
             .headers(headers -> headers
